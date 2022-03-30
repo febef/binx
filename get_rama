@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+
+console.log(process.argv[2].split('<#>')[1]);

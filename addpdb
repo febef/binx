@@ -1,0 +1,42 @@
+#!/bin/bash 
+root=`pwd`
+
+function template() {
+echo "
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: $1-pdb
+spec:
+  minAvailable: $2
+  selector:
+    matchLabels:
+      app: $1"
+}
+
+cd $root
+for app in $(ls); do
+  echo -en "\n» $app \n  "
+  cd "$app";
+  for f in $(ls); do
+    cat $f | grep 'PodDisruptionBudget' > /dev/null
+    if [ "$?" == "1" ]; then
+
+      min=`cat $f | grep 'minReplicas:' | cut -d: -f2`
+      if [ "$min" == "" ]; then
+        min=`cat $f | grep 'replicas:' | cut -d: -f2`
+        prefijo="r"
+      else
+        prefijo="m"
+      fi
+      min=$((min-1))
+      echo -n "$(echo -n $f | sed 's;.yaml;;g')[$prefijo,$min]|"
+      
+      template $(basename $app) $min >> $f
+    fi
+  done
+  cd $root
+done
+
+echo -en "\n";

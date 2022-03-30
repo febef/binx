@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sed  $1 | sed ':begin;$!N;s/\n/<newline>/;tbegin' \
+sed "s;---<newline>apiVersion: policy/v1beta1<newline>\(.*<newline>\)*\(.*app:\s\([-a-z0-9]\)*\);;g" | \
+sed "s;<newline>;\n;g" | \
+sed '/^$/d'

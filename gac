@@ -1,0 +1,38 @@
+#!/bin/bash
+root=`pwd`
+
+repos=()
+
+for repo in $(get_repos); do
+  repo_name=`get_repo_name $(get_repo $repo)`
+  repo_dir=$root/$(get_repos_dir)/$repo_name
+  cd $repo_dir
+  status=`git status` 
+  echo "$status" | grep -E 'Untracked|staged' 2>&1 > /dev/null
+
+  if [ $? == 0 ]; then
+    repos+="$repo_dir\n"
+    echo "» $repo_name [$(git branch | grep '*' | sed 's;*\s;;')]"
+    git status --short
+  fi
+
+  cd $root
+done
+
+echo -en "Add o/y Commint this changes? (y/n) "
+read res
+
+if [[ "$res" == "y" ]] ; then
+
+  echo -en "Enter a commit message: "
+  read message
+
+  for repo in `echo -e $repos`; do
+    cd $repo
+    git add --all
+    git commit -m "$message"
+  done
+  echo "Done."
+else
+  echo -e "Good look."
+fi

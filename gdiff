@@ -1,0 +1,23 @@
+#!/bin/bash
+
+root=`pwd`
+changes=0
+
+mkdir -p $(get_repos_dir) || true
+
+for repodata in $(get_repos); do
+
+  repo=`get_repo $repodata`
+  rname=`get_repo_name ${repo}`
+  rdir=`get_repos_dir`
+
+  cd "$root/$rdir/$rname"
+  echo " » $rname "
+  git status;
+  git diff;
+
+  cd $root
+done
+
+echo "Done."
+

@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+const yamljs = require('yamljs');
+
+const stack = yamljs.load(process.env.PWD+'/stack.yml');
+
+
+
+for (let project of stack.repositories) {
+
+   let base = project.base;
+   let projectName = project.project;
+   
+   let result = project.repos
+      .map(({name, ref}) => `${base}${projectName}/${name}.git<#>${ref}`)
+      .join('\n');
+   
+   console.log(result);
+}

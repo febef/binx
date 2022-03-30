@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+const yamljs = require('yamljs');
+
+const stack = yamljs.load(process.env.PWD+'/stack.yml');
+const proyectName = process.argv[2]
+const repoName = process.argv[3]
+let result = stack.repositories[0].directory;
+
+for (let project of stack.repositories) {
+  if (project.project == proyectName && 
+     (!repoName || (project.repos.map(r => r.name)).includes(repoName))
+    ) {
+    result=project.directory;
+    break;
+  }
+}
+
+console.log(result);
