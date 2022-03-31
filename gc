@@ -15,8 +15,6 @@ for repodata in $(get_repos); do
     echo -ne "  [ $reposdir >> $rname ]\n"
     cd $reposdir
 
-    pwd 
-    echo $repo
     git clone $repo
   }
 
