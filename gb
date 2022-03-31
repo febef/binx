@@ -1,0 +1,1 @@
+git checkout `git branch --all | fzf | sed 's; ;;g' | sed 's;*;;g'`
