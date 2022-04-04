@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+const yamljs = require('yamljs');
+
+const stack = yamljs.load(process.env.PWD+'/stack.yml');
+
+console.log(stack.gitUser.name);
+

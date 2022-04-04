@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+root=`pwd`
+
+for repodata in $(get_repos); do
+  cd $root
+
+  repo=`get_repo $repodata`
+  project=`get_project_name $repodata`  
+  rname=`get_repo_name ${repo}`
+  reposdir=`get_repos_dir ${project} ${rname}`
+  email=`get_git_email`
+  name=`get_git_name`
+
+  [ -d "$root/$reposdir/$rname" ] && {
+    rama=`get_rama $repodata`
+    echo -ne "  [ $reposdir >> $rname ]\n"
+    cd "$reposdir/$rname"
+
+    git config user.email $email
+    git config user.name $name
+
+
+  }
+
+done
