@@ -9,6 +9,9 @@ for repodata in $(get_repos); do
   rname=`get_repo_name ${repo}`
   reposdir=`get_repos_dir ${project} ${rname}`
 
+  email=`get_git_email`
+  name=`get_git_name`
+
   mkdir -p $reposdir || true
   [ -d "$root/$reposdir/$rname" ] || {
     rama=`get_rama $repodata`
@@ -16,6 +19,11 @@ for repodata in $(get_repos); do
     cd $reposdir
 
     git clone $repo
+
+    cd $rname
+    git config user.email "$email"
+    git config user.name "$name"
+
   }
 
 done

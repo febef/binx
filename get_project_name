@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
-var spl1= process.argv[2].split('/');
 
-console.log(spl1.splice(0, spl1.length-1).join('/').split(':')[1]);
+var spl1= process.argv[2].split('<#>')[0].split('/');
+var result = spl1.splice(0, spl1.length-1)
+    .join('/')
+    .split(':')[1];
+
+console.log(result);
